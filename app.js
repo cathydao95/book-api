@@ -29,6 +29,12 @@ app.get("/books/:id", (req, res) => {
   res.json(book);
 });
 
+app.all("*", (req, res) => {
+  res
+    .status(404)
+    .send(`Sorry, this is an invalid URL  - this API is only for books`);
+});
+
 app.listen(port, () => {
   console.log(`API server listening on port ${port}`);
 });
