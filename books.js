@@ -1,4 +1,4 @@
-const childrens_books = [
+const BOOKS = [
   {
     title: "Where the Sidewalk Ends",
     author: "Shel Silverstein",
@@ -49,3 +49,5 @@ const childrens_books = [
       "Sam-I-Am tries to convince a skeptical character to try green eggs and ham in various locations and circumstances, leading to surprising results.",
   },
 ];
+
+export default BOOKS;
