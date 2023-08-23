@@ -5,9 +5,11 @@ import BOOKS from "./books.js";
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.use(cors());
+
+const __dirname = path.resolve();
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
