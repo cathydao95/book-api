@@ -19,6 +19,16 @@ app.get("/books", (req, res) => {
   res.json(BOOKS);
 });
 
+app.get("/books/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(req.params);
+  const book = BOOKS.find((book) => book.id === id);
+  if (!book) {
+    res.status(404).send("Book not available");
+  }
+  res.json(book);
+});
+
 app.listen(port, () => {
   console.log(`API server listening on port ${port}`);
 });
