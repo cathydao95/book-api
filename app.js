@@ -10,8 +10,6 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
-const __dirname = path.resolve();
-
 app.get("/", (req, res) => {
   res.status(200).send("Hello World!");
 });
