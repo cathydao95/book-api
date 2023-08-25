@@ -16,21 +16,21 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello World!");
 });
 
-app.get("/books", (req, res) => {
-  res.status(200).json(BOOKS);
+app.get("/api/books", (req, res) => {
+  res.status(200).json({ success: true, books: BOOKS });
 });
 
-app.get("/books/:id", (req, res) => {
+app.get("/api/books/:id", (req, res) => {
   const { id } = req.params;
   console.log(req.params);
   const book = BOOKS.find((book) => book.id === id);
   if (!book) {
-    res.status(404).send("Book not available");
+    res.status(404).json({ success: false, msg: "Book not found" });
   }
-  res.json(book);
+  res.json({ success: true, book: book });
 });
 
-app.post("/add", (req, res) => {
+app.post("/api/books/add", (req, res) => {
   console.log(req.body);
   const { id, title, author, img, summary } = req.body;
   if (!title || !author || !img || !summary) {
@@ -40,10 +40,10 @@ app.post("/add", (req, res) => {
   }
   let addedBook = { id, title, author, img, summary };
   BOOKS.push(addedBook);
-  return res.status(201).json([...BOOKS]);
+  return res.status(201).json({ success: true, book: BOOKS });
 });
 
-app.put("/books/:bookId", (req, res) => {
+app.put("/api/books/:bookId", (req, res) => {
   const { bookId } = req.params;
   const { id, title, author, img, summary } = req.body;
   const book = BOOKS.find((book) => book.id === bookId);
@@ -58,7 +58,19 @@ app.put("/books/:bookId", (req, res) => {
     }
     return book;
   });
-  return res.status(200).json([...updatedBooks]);
+  return res.status(200).json({ success: true, books: updatedBooks });
+});
+
+app.delete("/api/books/:bookId", (req, res) => {
+  const { bookId } = req.params;
+  const book = BOOKS.find((book) => book.id === bookId);
+  if (!book) {
+    return res
+      .status(404)
+      .json({ success: false, msg: `No book with id ${bookId}` });
+  }
+  const updatedBooks = BOOKS.filter((book) => book.id !== bookId);
+  return res.status(200).json({ success: true, books: updatedBooks });
 });
 
 app.all("*", (req, res) => {
