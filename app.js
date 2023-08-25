@@ -31,7 +31,7 @@ app.get("/api/books/:id", (req, res) => {
 app.post("/api/books/add", (req, res) => {
   console.log(req.body);
   const { id, title, author, img, summary } = req.body;
-  if (!title || !author || !img || !summary) {
+  if (!id || !title || !author || !img || !summary) {
     return res
       .status(400)
       .send({ success: false, msg: "Please provide all values" });
