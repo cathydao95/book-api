@@ -48,32 +48,60 @@ app.post("/api/books/add", (req, res) => {
 app.put("/api/books/:bookId", (req, res) => {
   const { bookId } = req.params;
   const { id, title, author, img, summary } = req.body;
-  const book = BOOKS.find((book) => book.id === bookId);
-  if (!book) {
+
+  // this returns new array so client is not retrieving the updated data when refresh client
+  // const book = BOOKS.find((book) => book.id === bookId);
+  // if (!book) {
+  //   return res
+  //     .status(404)
+  //     .json({ success: false, msg: `No book with id ${bookId}` });
+  // }
+
+  // const updatedBooks = BOOKS.map((book) => {
+  //   if (book.id === bookId) {
+  //     return { ...book, id, title, author, img, summary };
+  //   }
+  //   return book;
+  // });
+  // return res.status(200).json({ success: true, books: updatedBooks });
+
+  // modify BOOKS directly
+  const bookIndex = BOOKS.findIndex((book) => book.id === bookId);
+  if (bookIndex === -1) {
     return res
       .status(404)
       .json({ success: false, msg: `No book with id ${bookId}` });
   }
-  const updatedBooks = BOOKS.map((book) => {
-    if (book.id === bookId) {
-      return { ...book, id, title, author, img, summary };
-    }
-    return book;
-  });
-  return res.status(200).json({ success: true, books: updatedBooks });
+
+  BOOKS[bookIndex] = { ...BOOKS[bookIndex], id, title, author, img, summary };
+
+  return res.status(200).json({ success: true, books: BOOKS });
 });
 
 // DELETE BOOK
 app.delete("/api/books/:bookId", (req, res) => {
   const { bookId } = req.params;
-  const book = BOOKS.find((book) => book.id === bookId);
-  if (!book) {
+  // this returns new array so client is not retrieving the updated data when refresh client
+  // const book = BOOKS.find((book) => book.id === bookId);
+  // if (!book) {
+  //   return res
+  //     .status(404)
+  //     .json({ success: false, msg: `No book with id ${bookId}` });
+  // }
+  // const updatedBooks = BOOKS.filter((book) => book.id !== bookId);
+  // return res.status(200).json({ success: true, books: updatedBooks });
+
+  // modify BOOKS directly
+  const bookIndex = BOOKS.findIndex((book) => book.id === bookId);
+  if (bookIndex === -1) {
     return res
       .status(404)
       .json({ success: false, msg: `No book with id ${bookId}` });
   }
-  const updatedBooks = BOOKS.filter((book) => book.id !== bookId);
-  return res.status(200).json({ success: true, books: updatedBooks });
+
+  // Use splice method to modify existing array and remove item
+  BOOKS.splice(bookIndex, 1);
+  return res.status(200).json({ success: true, books: BOOKS });
 });
 
 // ADD A CATCH ALL
