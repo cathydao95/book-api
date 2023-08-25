@@ -1,5 +1,4 @@
 // OBTAIN DATA VIA FETCH
-console.log("testing");
 let booksContainer = document.getElementsByClassName("books-container")[0];
 
 const getBooks = async () => {
