@@ -14,13 +14,14 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello World!");
 });
 
+//  GET ALL BOOKS
 app.get("/api/books", (req, res) => {
   res.status(200).json({ success: true, books: BOOKS });
 });
 
+// GET SINGLE BOOK
 app.get("/api/books/:id", (req, res) => {
   const { id } = req.params;
-  console.log(req.params);
   const book = BOOKS.find((book) => book.id === id);
   if (!book) {
     res.status(404).json({ success: false, msg: "Book not found" });
@@ -28,9 +29,11 @@ app.get("/api/books/:id", (req, res) => {
   res.json({ success: true, book: book });
 });
 
+// ADD BOOK
 app.post("/api/books/add", (req, res) => {
-  console.log(req.body);
+  // Destructure
   const { id, title, author, img, summary } = req.body;
+  // Check if all fields provided
   if (!id || !title || !author || !img || !summary) {
     return res
       .status(400)
@@ -41,6 +44,7 @@ app.post("/api/books/add", (req, res) => {
   return res.status(201).json({ success: true, book: BOOKS });
 });
 
+// UPDATE BOOK
 app.put("/api/books/:bookId", (req, res) => {
   const { bookId } = req.params;
   const { id, title, author, img, summary } = req.body;
@@ -59,6 +63,7 @@ app.put("/api/books/:bookId", (req, res) => {
   return res.status(200).json({ success: true, books: updatedBooks });
 });
 
+// DELETE BOOK
 app.delete("/api/books/:bookId", (req, res) => {
   const { bookId } = req.params;
   const book = BOOKS.find((book) => book.id === bookId);
@@ -71,6 +76,7 @@ app.delete("/api/books/:bookId", (req, res) => {
   return res.status(200).json({ success: true, books: updatedBooks });
 });
 
+// ADD A CATCH ALL
 app.all("*", (req, res) => {
   res
     .status(404)
