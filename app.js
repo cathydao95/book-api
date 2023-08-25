@@ -1,4 +1,4 @@
-import express from "express";
+import express, { urlencoded } from "express";
 import cors from "cors";
 import path from "path";
 import BOOKS from "./books.js";
@@ -8,6 +8,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
+app.use(express.json());
 
 const __dirname = path.resolve();
 
@@ -27,6 +28,19 @@ app.get("/books/:id", (req, res) => {
     res.status(404).send("Book not available");
   }
   res.json(book);
+});
+
+app.post("/add", (req, res) => {
+  console.log(req.body);
+  const { id, title, author, img, summary } = req.body;
+  if (!title || !author || !img || !summary) {
+    return res
+      .status(400)
+      .send({ success: false, msg: "Please provide all values" });
+  }
+  let addedBook = { id, title, author, img, summary };
+  BOOKS.push(addedBook);
+  return res.status(201).json({ ...BOOKS });
 });
 
 app.all("*", (req, res) => {
