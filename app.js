@@ -13,11 +13,11 @@ app.use(express.json());
 const __dirname = path.resolve();
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.status(200).send("Hello World!");
 });
 
 app.get("/books", (req, res) => {
-  res.json(BOOKS);
+  res.status(200).json(BOOKS);
 });
 
 app.get("/books/:id", (req, res) => {
@@ -40,7 +40,25 @@ app.post("/add", (req, res) => {
   }
   let addedBook = { id, title, author, img, summary };
   BOOKS.push(addedBook);
-  return res.status(201).json({ ...BOOKS });
+  return res.status(201).json([...BOOKS]);
+});
+
+app.put("/books/:bookId", (req, res) => {
+  const { bookId } = req.params;
+  const { id, title, author, img, summary } = req.body;
+  const book = BOOKS.find((book) => book.id === bookId);
+  if (!book) {
+    return res
+      .status(404)
+      .json({ success: false, msg: `No book with id ${bookId}` });
+  }
+  const updatedBooks = BOOKS.map((book) => {
+    if (book.id === bookId) {
+      return { ...book, id, title, author, img, summary };
+    }
+    return book;
+  });
+  return res.status(200).json([...updatedBooks]);
 });
 
 app.all("*", (req, res) => {
