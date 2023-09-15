@@ -1,0 +1,29 @@
+body {
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+}
+.books-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.book-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.book-img {
+  height: 300px;
+}
+
+.book-title {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
